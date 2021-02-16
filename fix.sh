@@ -9,7 +9,23 @@ cd $(mktemp -d)
 echo -e "Downloading to $PWD\n"
 wget ${URL} || { echo "unable to download file, aborting." >&2; exit 1; }
 
+echo "Extracting..."
 cabextract vc_redist.x64.exe
-cabextract a10
 
-cp ucrtbase.dll ${DEST}
+ARCHIVE="a10"
+if test -f "$ARCHIVE"; then
+	cabextract a10
+else
+	echo "target archive not found, aborting"
+	exit 1
+fi
+
+TARGET="ucrtbase.dll"
+if test -f "$TARGET"; then
+	echo -e "Moving to $DEST\n"
+	mv $TARGET $DEST
+	echo "Patch complete."
+else
+	echo "target dll not found, aborting"
+	exit 1
+fi
