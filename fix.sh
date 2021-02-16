@@ -14,7 +14,7 @@ cabextract vc_redist.x64.exe
 
 ARCHIVE="a10"
 if test -f "$ARCHIVE"; then
-	cabextract a10
+	cabextract $ARCHIVE
 else
 	echo "target archive not found, aborting"
 	exit 1
@@ -22,9 +22,8 @@ fi
 
 TARGET="ucrtbase.dll"
 if test -f "$TARGET"; then
-	echo -e "Moving to $DEST\n"
-	mv $TARGET $DEST
-	echo "Patch complete."
+	echo -e "Moving $TARGET to $DEST\n"
+	mv $TARGET $DEST && echo "Patch complete."
 else
 	echo "target dll not found, aborting"
 	exit 1
